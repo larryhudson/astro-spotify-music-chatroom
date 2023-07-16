@@ -1,0 +1,27 @@
+---
+import Layout from "@src/components/Layout.astro";
+---
+
+<Layout>
+
+	<p>Hello?</p>
+
+	<form id="chat-form">
+		<input name="message" id="message-input" />
+		<button>Send</button>
+	</form>
+<script is:inline src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script is:inline>
+	var socket = io("ws://localhost:3001");
+
+	const chatForm = document.querySelector('#chat-form');
+	const messageInput = document.querySelector('#message-input');
+
+	chatForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+
+		
+	}
+</script>
+	</Layout>
+

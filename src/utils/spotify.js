@@ -25,7 +25,7 @@ export async function getAuthToken({code}) {
 export async function playTrackForUser({authToken, trackId, positionMs=0}) {
     const spotifyUrl = "https://api.spotify.com/v1/me/player/play";
     const spotifyRequestData = {
-	context_uri: `spotify:track:${trackId}`
+	context_uri: `spotify:track:${trackId}`,
 	position_ms: positionMs,
 	// if we want to do offset later on
 	// offset: {
@@ -39,7 +39,7 @@ export async function playTrackForUser({authToken, trackId, positionMs=0}) {
 	    'Authorization': `Bearer ${authToken}`,
 	},
 	body: JSON.stringify(spotifyRequestData)
-    }
+    })
 
     if (!spotifyResponse.ok) {
 	// handle error
