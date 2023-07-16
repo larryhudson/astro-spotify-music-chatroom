@@ -1,0 +1,40 @@
+---
+import Layout from "@src/components/Layout.astro";
+import {executeQuery, createRecord} from "@src/utils/db";
+import {getUserIdFromRequest} from "@src/utils/auth"; 
+
+// if not logged in, redirect to auth page.
+const userId = getUserIdFromRequest(Astro.request);
+if (!userId) {
+  return Astro.redirect('/auth/login');
+}
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const name = formData.get('name');
+  const creator_id = userId;
+  const newRoomId = createRecord('rooms', {name, creator_id}); 
+
+  return Astro.redirect(`/rooms/${newRoomId}`);
+}
+
+const rooms = executeQuery('rooms');
+---
+
+<Layout>
+	<h1>Rooms</h1>
+	
+	<ul>
+		{rooms.map(room => (
+		<li><a href={`/rooms/${room.id}`}>{room.name}</a></li>
+		))}
+	</ul>
+
+	<h3>Create a new room</h3>
+
+	<form method="POST">
+		<label for="name-input">Room name:</label>
+		<input type="text" name="name" id="name-input" />
+		<button>Create</button>
+	</form>
+</Layout>

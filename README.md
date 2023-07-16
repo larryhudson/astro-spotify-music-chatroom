@@ -1,4 +1,23 @@
-# Astro Starter Kit: Minimal
+# Music chatroom with Astro, Spotify and websockets 
+
+## To do list
+- Spotify authentication - need to be able to login and then the app controls their Spotify player.
+    - [x] Copy from the `music-researcher` app.
+    - [x] Set up new app in Spotify developer dashboard.
+    - [x] Set env variables
+    - [x] Set correct authentication scopes so that we can control the player.
+- Database setup?
+    - [x] Copy basic sqlite stuff from `music-researcher` app. initialise-db script, simple db schema.
+    - [x] Rooms
+    - [x] Users (linked to spotify user IDs?)
+    - Room admins (who can control queue)
+    - [x] need to be able to see list of rooms
+- Websockets chatrooms
+    - need to be able to join
+    - When you join the room, the app needs to control your Spotify player. Needs to be able to access the user's cookies to get the spotify auth token
+    - users need to be able to see what's in the queue
+    - admins need to be able to queue up a new song
+    - maybe users can 'request' a song and admins can approve it?
 
 ```
 npm create astro@latest -- --template minimal
