@@ -6,6 +6,10 @@ import Layout from "@src/components/Layout.astro";
 
 	<p>Hello?</p>
 
+	<ul id="messages-list">
+
+	</ul>
+
 	<form id="chat-form">
 		<input name="message" id="message-input" />
 		<button>Send</button>
@@ -16,12 +20,23 @@ import Layout from "@src/components/Layout.astro";
 
 	const chatForm = document.querySelector('#chat-form');
 	const messageInput = document.querySelector('#message-input');
+	const messagesList = document.querySelector('#messages-list');
 
 	chatForm.addEventListener('submit', function(event) {
 		event.preventDefault();
-
+	
+	socket.emit('chat message', messageInput.value);
+	messageInput.value = '';
 		
-	}
+	});
+
+socket.on('chat message', function(msg) {
+    console.log("new chat message", msg);
+    const newMessageLi = document.createElement('li');
+    newMessageLi.textContent = msg;
+    messagesList.appendChild(newMessageLi);
+    window.scrollTo(0, document.body.scrollHeight);
+  });
 </script>
 	</Layout>
 

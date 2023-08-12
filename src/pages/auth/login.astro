@@ -5,7 +5,7 @@ const authUrl = new URL(`https://accounts.spotify.com/authorize`)
 authUrl.searchParams.set('response_type', 'code');
 authUrl.searchParams.set('client_id', import.meta.env.SPOTIFY_CLIENT_ID);
 authUrl.searchParams.set('scope', 'user-modify-playback-state');
-authUrl.searchParams.set('redirect_uri', 'http://localhost:3000/auth/spotify/callback');
+authUrl.searchParams.set('redirect_uri', 'http://localhost:3000/auth/callback');
 ---
 
 <Layout>

@@ -15,10 +15,12 @@ const io = new Server(server, {
 // when a new user connects
 io.on('connection', (socket) => {
 	console.log('a user connected');
-
+	
+	console.log(socket);
 	// when there's a new message
 	socket.on('chat message', (msg) => {
 		console.log('message: ' + msg);
+		io.emit('chat message', msg);
 	});
 
 });

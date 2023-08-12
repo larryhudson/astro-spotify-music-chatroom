@@ -4,7 +4,7 @@ export async function getAuthToken({code}) {
     const formData = new FormData();
     formData.append('grant_type', 'authorization_code');
     formData.append('code', code);
-    formData.append('redirect_uri', 'http://localhost:3000/auth/spotify/callback');
+    formData.append('redirect_uri', 'http://localhost:3000/auth/callback');
 
     const encodedData = new URLSearchParams(formData).toString();
 
@@ -20,6 +20,28 @@ export async function getAuthToken({code}) {
     }).then(response => response.json())
 
     return spotifyResponse.access_token;
+}
+
+export async function getCurrentUserProfile(authToken) {
+
+  // TODO: maybe we should save that somewhere? cache it?
+  
+  const spotifyUrl = "https://api.spotify.com/v1/me"
+
+  const spotifyResponse = await fetch(spotifyUrl, {
+    headers: {
+      'Authorization': `Bearer ${authToken}`
+    }
+  });
+
+  if (!spotifyResponse.ok) {
+  const responseText = await spotifyResponse.text();
+    throw new Error(responseText);
+  }
+
+  const userProfile = await spotifyResponse.json();
+
+  return userProfile;
 }
 
 export async function playTrackForUser({authToken, trackId, positionMs=0}) {

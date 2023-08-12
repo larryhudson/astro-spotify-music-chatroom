@@ -1,18 +1,19 @@
 ---
 import Layout from "@src/components/Layout.astro";
 import {executeQuery, createRecord} from "@src/utils/db";
-import {getUserIdFromRequest} from "@src/utils/auth"; 
+import {getLocalUserFromAuthToken} from "@src/utils/auth"; 
 
 // if not logged in, redirect to auth page.
-const userId = getUserIdFromRequest(Astro.request);
-if (!userId) {
+const authToken = Astro.cookies.get('spotify-auth-token').value;
+const localUser = await getLocalUserFromAuthToken(authToken);
+if (!authToken || !localUser) {
   return Astro.redirect('/auth/login');
 }
 
 if (Astro.request.method === 'POST') {
   const formData = await Astro.request.formData();
   const name = formData.get('name');
-  const creator_id = userId;
+  const creator_id = localUser.id;
   const newRoomId = createRecord('rooms', {name, creator_id}); 
 
   return Astro.redirect(`/rooms/${newRoomId}`);
@@ -23,7 +24,8 @@ const rooms = executeQuery('rooms');
 
 <Layout>
 	<h1>Rooms</h1>
-	
+
+	<p>User ID: {JSON.stringify(localUser)}</p>
 	<ul>
 		{rooms.map(room => (
 		<li><a href={`/rooms/${room.id}`}>{room.name}</a></li>

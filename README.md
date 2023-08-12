@@ -10,8 +10,10 @@
     - [x] Copy basic sqlite stuff from `music-researcher` app. initialise-db script, simple db schema.
     - [x] Rooms
     - [x] Users (linked to spotify user IDs?)
-    - Room admins (who can control queue)
+    - [x] Room admins (who can control queue)
     - [x] need to be able to see list of rooms
+    - [x] when a user logs in for the first time, create a new 'user' for them in the database. If they have already logged in before, you don't need to do that.   
+    - [x] users should be able to create a new room
 - Websockets chatrooms
     - need to be able to join
     - When you join the room, the app needs to control your Spotify player. Needs to be able to access the user's cookies to get the spotify auth token

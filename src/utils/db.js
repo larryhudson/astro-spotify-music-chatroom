@@ -7,7 +7,10 @@ export function createRecord(table, data) {
   const keys = Object.keys(data);
   const values = Object.values(data);
   const placeholders = values.map(() => '?').join(', ');
-  const statement = db.prepare(`INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders})`);
+  const sql = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders})` 
+  console.log(sql);
+  const statement = db.prepare(sql);
+  console.log(values);
   const result = statement.run(values);
   return result.lastInsertRowid;
 }
@@ -61,12 +64,38 @@ export function executeQuery(table, condition) {
   return statement.all(values);
 }
 
+export function getRecordWhere(table, condition) {
+  let whereClause = '';
+  const values = [];
+
+  if (condition) {
+    const keys = Object.keys(condition);
+    const conditions = keys.map(key => {
+      values.push(condition[key]);
+      return `${key} = ?`;
+    });
+
+    whereClause = `WHERE ${conditions.join(' AND ')}`;
+  }
+
+  const query = `SELECT * FROM ${table} ${whereClause}`;
+  const statement = db.prepare(query);
+  return statement.get(values);
+}
+
 export function deleteRecordById(table, id) {
   const parsedId = parseId(id);
 
   const statement = db.prepare(`DELETE FROM ${table} WHERE id = ?`);
   const result = statement.run(parsedId);
   return result.changes > 0;
+}
+
+function executeStatement(sql) {
+  const statement = db.prepare(sql);
+  const result = statement.run();
+
+  return result;
 }
 
 export function initDb() {

@@ -1,0 +1,14 @@
+---
+import {getRecordById} from "@src/utils/db";
+import Layout from "@src/components/Layout.astro";
+import Dump from "@src/components/Dump.astro";
+
+const roomId = Astro.params.id;
+const room = getRecordById('rooms', roomId);
+---
+
+<Layout>
+	<h1>Room: {room.name}</h1>
+	<Dump data={room} />
+</Layout>
+
